@@ -1,75 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#2c3e50" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <style>
-    /* .add-button {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-    } */
-  </style>
-</head>
+  <body>
+    1621313524783
+    <button class="btn btn-lg btn-info add-button">Add to home screen</button>
+    <script src="https://mokmoon.com/liff1/js/vconsole.min.js"></script>
 
-<body>
-  1621313524783
-  <button class="add-button">Add to home screen</button>
-  <script src="https://mokmoon.com/liff1/js/vconsole.min.js"></script>
+    <script>
+      'use strict';
 
-  <script>
-    'use strict';
+      // if (window.addToHomescreen) {
+      //   ath = addToHomescreen({
+      //     onCanInstall: function (platform, _instance) {
+      //       //run any on screen prompting logic from here
+      //     },
+      //     onBeforeInstallPrompt: function (platform) {
+      //       //this triggers in response to the browser triggering the beforeInstallPrompt event
+      //       console.log("native prompt: ", platform);
+      //     }
+      //   });
+      // }
+      // let deferredPrompt;
+      // const addBtn = document.querySelector('.add-button');
+      // addBtn.style.display = 'none';
 
-    // if (window.addToHomescreen) {
-    //   ath = addToHomescreen({
-    //     onCanInstall: function (platform, _instance) {
-    //       //run any on screen prompting logic from here
-    //     },
-    //     onBeforeInstallPrompt: function (platform) {
-    //       //this triggers in response to the browser triggering the beforeInstallPrompt event
-    //       console.log("native prompt: ", platform);
-    //     }
-    //   });
-    // }
-    // let deferredPrompt;
-    // const addBtn = document.querySelector('.add-button');
-    // addBtn.style.display = 'none';
+      // addBtn.addEventListener('click', (e) => {
+      //   // hide our user interface that shows our A2HS button
+      //   console.log('click');
+      // });
+      if ('serviceWorker' in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker.register('./service-worker.js').then(
+          function(registration) {
+            console.log('Service worker registration succeeded:', registration);
+          },
+          /*catch*/ function(error) {
+            console.log('Service worker registration failed:', error);
+          }
+        );
+      } else {
+        console.log('Service workers are not supported.');
+      }
 
-    // addBtn.addEventListener('click', (e) => {
-    //   // hide our user interface that shows our A2HS button
-    //   console.log('click');
-    // });
-    if ('serviceWorker' in navigator) {
-      // Register a service worker hosted at the root of the
-      // site using the default scope.
-      navigator.serviceWorker.register('./service-worker.js').then(function (registration) {
-        console.log('Service worker registration succeeded:', registration);
-
-
-      }, /*catch*/ function (error) {
-        console.log('Service worker registration failed:', error);
+      window.addEventListener('beforeinstallprompt', function(e) {
+        // log the platforms provided as options in an install prompt
+        console.log(e.platforms); // e.g., ["web", "android", "windows"]
+        e.userChoice.then(function(choiceResult) {
+          console.log(choiceResult.outcome); // either "accepted" or "dismissed"
+        }, handleError);
       });
-    } else {
-      console.log('Service workers are not supported.');
-    }
 
-    window.addEventListener("beforeinstallprompt", function (e) {
-      // log the platforms provided as options in an install prompt
-      console.log(e.platforms); // e.g., ["web", "android", "windows"]
-      e.userChoice.then(function (choiceResult) {
-        console.log(choiceResult.outcome); // either "accepted" or "dismissed"
-      }, handleError);
-    });
-
-
-
-    const vConsole = new VConsole();
-  </script>
-
-</body>
-
+      const vConsole = new VConsole();
+    </script>
+  </body>
 </html>
